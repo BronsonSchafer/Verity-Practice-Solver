@@ -1,28 +1,32 @@
 // dictionary defs 
-const dict3D = {
-    1: 'sphere',
-    2: 'cube',
-    3: 'pyramid',
-    4: 'cylinder',
-    5: 'prism',
-    6: 'cone'
-}
-const dict2D = {
-    1: 'circle',
-    2: 'square',
-    3: 'triangle'
-}
+const dictShape = {
+    '2D': {
+        1: 'circle',
+        2: 'square',
+        3: 'triangle'
+    },
+    '3D': {
+        1: 'sphere',
+        2: 'cube',
+        3: 'pyramid',
+        4: 'cylinder',
+        5: 'prism',
+        6: 'cone'
+    }
+};
 
 // tracks all the pressed buttons
-var pressed3D = {
-    'left': null,
-    'middle': null,
-    'right': null,
-};
-var pressed2D = {
-    'left': null,
-    'middle': null,
-    'right': null,
+var pressed = {
+    '2D': {
+        'left': null,
+        'middle': null,
+        'right': null,
+    },
+    '3D': {
+        'left': null,
+        'middle': null,
+        'right': null,
+    }
 };
 
 // redirects to the different pages 
@@ -72,29 +76,17 @@ function saveInfo(button, save) {
     const groupId = fieldset.getAttribute('data-id'); 
     const buttonId = button.getAttribute('data-id'); 
     // console.log(`Button ${buttonId} in group ${groupId} was pressed`);
-    // cur group
+
+    // cur group (left/mid/right) and type (2D/3D)
     var group = groupId.substring(0, groupId.length - 2);
     var type = groupId.substring(groupId.length - 2);
 
-    // check if saving 2D or 3D 
-    if(type == '3D'){
-        // save the value 
-        if(!save){
-            pressed3D[group] = null;
-        }
-        else{
-            pressed3D[group] = buttonId;
-        }
+    // save the value 
+    if(!save){
+        pressed[type][group] = null;
     }
     else{
-        // save the value 
-        if(!save){
-            pressed2D[group] = null;
-        }
-        else{
-            pressed2D[group] = buttonId;
-        }
+        pressed[type][group] = buttonId;
     }
-    console.log(pressed3D)
-    console.log(pressed2D)
+    console.log(pressed)
 }
