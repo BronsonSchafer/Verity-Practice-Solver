@@ -15,6 +15,15 @@ const dictShape = {
     }
 };
 
+const dictRef3D = {
+    'sphere': [1, 1],
+    'cube': [2, 2],
+    'pyramid': [3, 3],
+    'cylinder': [1, 2],
+    'prism': [2, 3],
+    'cone': [1, 3],
+}
+
 // tracks all the pressed buttons
 var pressed = {
     '2D': {
@@ -62,8 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     // save value
                     saveInfo(button, true);
                 }
-                // Call the function to check which button was pressed
-                
+                // Call to try and solve
+                solve();
             });
         });
     });
@@ -77,16 +86,59 @@ function saveInfo(button, save) {
     const buttonId = button.getAttribute('data-id'); 
     // console.log(`Button ${buttonId} in group ${groupId} was pressed`);
 
-    // cur group (left/mid/right) and type (2D/3D)
+    // cur group (left/mid/right) and dim (2D/3D)
     var group = groupId.substring(0, groupId.length - 2);
-    var type = groupId.substring(groupId.length - 2);
+    var dim = groupId.substring(groupId.length - 2);
 
     // save the value 
     if(!save){
-        pressed[type][group] = null;
+        pressed[dim][group] = null;
     }
     else{
-        pressed[type][group] = buttonId;
+        pressed[dim][group] = buttonId;
     }
-    console.log(pressed)
 }
+
+// solve based off the given info
+function solve(){
+    var valid = validate();
+    console.log(valid)
+    // check that all values are filled
+
+}
+
+// validates the inputs 
+function validate(){
+    // check if any values are null
+    for(var dim in pressed){
+        for(var side in pressed[dim]){
+            if(pressed[dim][side] == null){
+                return null;
+            }
+        }
+    }
+
+    // check that none of the 2D shapes are the same
+    const _2D = pressed['2D'];
+    if(_2D['left'] == _2D['middle'] || _2D['left'] == _2D['right'] || _2D['middle'] == _2D['right']){
+        return false;
+    }
+
+    // check that the shape values add up
+    var subSet = [0, 0, 0]
+    for(var side in pressed['3D']){
+        curShape = pressed['3D'][side]
+        subShape = dictRef3D[dictShape['3D'][curShape]]
+        // save sub shape values 
+        for(var shape in subShape){
+            subSet[subShape[shape] - 1] += 1;
+        }
+    }
+    // check that all values add to 2 
+    if(subSet[0] != 2 || subSet[1] != 2 || subSet[2] != 2){
+        return false
+    }
+
+    // all tests pass
+    return true;
+} 
