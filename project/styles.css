@@ -48,6 +48,10 @@ header {
     width: 100%;
     box-sizing: border-box;
 }
+.space {
+    width: 20px;
+    height: 20px;
+}
 
 /* Nav Info */
 button {
@@ -67,8 +71,8 @@ button:hover {
     color: #000000;
 }
 
-/* container info */
-.container {
+/* container info for full page*/
+.containerFull {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,16 +80,37 @@ button:hover {
     margin: 20px;
 }
 
-/* Item Info */
-.item {
+.itemHome {
     text-align: center;
     background-color: #a4deff;
     border: 2px solid #393941;
+    color: #393941;
     border-radius: 10px;
     width: 25%;
     padding: 20px;
     margin: 0 75px;
     box-sizing: border-box;
+}
+
+/* container for full page (vertical) */
+.containerFull2 {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-start; 
+    align-items: center; 
+    height: 100vh;
+}
+
+.itemNesting {
+    margin: 10px; 
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
 }
 
 /* Image Info */
@@ -103,6 +128,50 @@ img {
 .custom-list {
     list-style-type: square; 
     text-align: left;
+    color: #393941;
+}
+
+/* solver stuff */
+.buttonSolver{
+    width: 50px; 
+    height: 50px; 
+    padding: 0;
+    border: none;
+}
+
+.button-group {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    margin: 0 10px; 
+}
+
+.button-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    grid-gap: 10px; 
+}
+.button-groups {
+    display: flex; /* Use flexbox */
+}
+
+fieldset {
+    color: #393941;
+    border-color: #393941;
+    border-style: solid;
+}
+
+.imgSolver {
+    width: 100%; 
+    height: 100%;
+    object-fit: cover;
+}
+
+button img{
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover;
+    border-radius: 5px;
 }
 
 /* footer */
