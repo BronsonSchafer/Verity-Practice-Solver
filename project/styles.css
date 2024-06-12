@@ -232,3 +232,32 @@ footer {
     width: 100%;
     margin-top: auto;
 }
+
+/* padding settings for phones */
+@media only screen and (max-width: 768px) {
+    .containerFull2 {
+      padding: 10px; 
+    }
+  
+    header {
+      padding: 5px 0; 
+    }
+  
+    .footer {
+      padding: 10px 0; 
+    }
+}
+  
+@media only screen and (max-width: 480px) {
+    #app {
+      max-width: 90%; 
+    }
+  
+    .containerFull2 {
+      padding: 5px; 
+    }
+  
+    header {
+      font-size: 14px; 
+    }
+}
