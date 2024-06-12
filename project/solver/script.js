@@ -71,15 +71,30 @@ function saveInfo(button, save) {
     const fieldset = button.closest('.button-group'); 
     const groupId = fieldset.getAttribute('data-id'); 
     const buttonId = button.getAttribute('data-id'); 
-    console.log(`Button ${buttonId} in group ${groupId} was pressed`);
+    // console.log(`Button ${buttonId} in group ${groupId} was pressed`);
     // cur group
     var group = groupId.substring(0, groupId.length - 2);
+    var type = groupId.substring(groupId.length - 2);
 
-    // save the value 
-    if(!save){
-        pressed3D[group] = null;
+    // check if saving 2D or 3D 
+    if(type == '3D'){
+        // save the value 
+        if(!save){
+            pressed3D[group] = null;
+        }
+        else{
+            pressed3D[group] = buttonId;
+        }
     }
     else{
-        pressed3D[group] = buttonId;
+        // save the value 
+        if(!save){
+            pressed2D[group] = null;
+        }
+        else{
+            pressed2D[group] = buttonId;
+        }
     }
+    console.log(pressed3D)
+    console.log(pressed2D)
 }
