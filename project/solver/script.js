@@ -170,16 +170,16 @@ function solve(){
     var valid3D = validate3D(pressed['3D']);
     if(!valid2D || !valid3D){
         var msg = '<p>Waiting for valid input...</p>';
-        document.querySelector('div.itemNesting[data-id="finalShape"]').innerHTML = msg;
+        document.querySelector('div.itemNesting[id="finalShape"]').innerHTML = msg;
         return;
     }
     var msg = '';
-    document.querySelector('div.itemNesting[data-id="finalShape"]').innerHTML = msg;
+    document.querySelector('div.itemNesting[id="finalShape"]').innerHTML = msg;
 
     // seach for the best path
-    path = findPath(pressed, 0);
+    let path = findPath(JSON.parse(JSON.stringify(pressed)), 0);
     console.log(path)
-
+    path = [[['left', 'middle'], [1, 2]], [['middle', 'right'], [3, 2]]]
     displayPath(path);
 }
 
@@ -254,15 +254,12 @@ function findPath(curState, depth){
         return false;
     }
 
+    let paths = [];
     // check if left and middle should swap
-    debugger
     if(!validSpot(curState, 'left') || !validSpot(curState, 'middle')){
         let options = getSwapOptions(curState, 'left', 'middle');
         let best = makeSwap(curState, options[0]);
-        console.log(curState)
-        console.log(best)
-        console.log(best)
-        debugger
+        paths.push(options[0]);
     }
 
     // check if left and right should swap
@@ -274,6 +271,8 @@ function findPath(curState, depth){
     if(!validSpot(curState, 'middle') && !validSpot(curState, 'right')){
         let options = getSwapOptions(curState, 'middle', 'right');
     }
+
+    return paths;
 }
 
 // check that the 3D and 2D have no matching
@@ -362,4 +361,53 @@ function makeSwap(curState, swap){
     newState['3D'][side2]['id'] = dictShape['3D_names'][dictRef3D[newID]];
 
     return newState;
+}
+
+// Follows the path and makes the display for the options to take
+function displayPath(path){
+    const finalShapeDiv = document.getElementById('finalShape');
+    for(let i = 0; i < path.length + 2; i++){
+        let move1 = path[i][0][0];
+        let move2 = path[i][0][1];
+        let shape1 = path[i][1][0];
+        let shape2 = path[i][1][1];
+
+        let htmlContent = `
+            <fieldset>
+                <legend>Step ${i+1}.)</legend>
+                <div class="itemNesting">
+                    <p>
+                        Place <strong class="text-bold1">${dictShape['2D'][shape2]}</strong> on <strong class="text-bold1">${move1}</strong> and 
+                        <strong class="text-bold2">${dictShape['2D'][shape1]}</strong> on <strong class="text-bold2">${move2}</strong>
+                    </p>
+                    <div class="button-groups">
+                        <fieldset class="button-group">
+                            <legend>Left</legend>
+                            <img src="../../assets/2D/circle.svg" alt="Image 1" class="${(move1 == 'left' && shape2 == 1) || (move2 == 'left' && shape1 == 1) ? 'imgSolverSolved2' : 'imgSolverSolved'}">
+                            <img src="../../assets/2D/square.svg" alt="Image 2" class="${(move1 == 'left' && shape2 == 2) || (move2 == 'left' && shape1 == 2)  ? 'imgSolverSolved2' : 'imgSolverSolved'}">
+                            <img src="../../assets/2D/triangle.svg" alt="Image 3" class="${(move1 == 'left' && shape2 == 3) || (move2 == 'left' && shape1 == 3)  ? 'imgSolverSolved2' : 'imgSolverSolved'}">
+                        </fieldset>
+                        <fieldset class="button-group">
+                            <legend>Middle</legend>
+                            <img src="../../assets/2D/circle.svg" alt="Image 1" class="${(move1 == 'middle' && shape2 == 1) || (move2 == 'middle' && shape1 == 1)  ? 'imgSolverSolved2' : 'imgSolverSolved'}">
+                            <img src="../../assets/2D/square.svg" alt="Image 2" class="${(move1 == 'middle' && shape2 == 2) || (move2 == 'middle' && shape1 == 2)  ? 'imgSolverSolved2' : 'imgSolverSolved'}">
+                            <img src="../../assets/2D/triangle.svg" alt="Image 3" class="${(move1 == 'middle' && shape2 == 3) || (move2 == 'middle' && shape1 == 3)  ? 'imgSolverSolved2' : 'imgSolverSolved'}">
+                        </fieldset>
+                        <fieldset class="button-group">
+                            <legend>Right</legend>
+                            <img src="../../assets/2D/circle.svg" alt="Image 1" class="${(move1 == 'right' && shape2 == 1) || (move2 == 'right' && shape1 == 1)  ? 'imgSolverSolved2' : 'imgSolverSolved'}">
+                            <img src="../../assets/2D/square.svg" alt="Image 2" class="${(move1 == 'right' && shape2 == 2) || (move2 == 'right' && shape1 == 2)  ? 'imgSolverSolved2' : 'imgSolverSolved'}">
+                            <img src="../../assets/2D/triangle.svg" alt="Image 3" class="${(move1 == 'right' && shape2 == 3) || (move2 == 'right' && shape1 == 3)  ? 'imgSolverSolved2' : 'imgSolverSolved'}">
+                        </fieldset>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="space"> </div>
+        `;
+
+        // Get the target element
+        finalShapeDiv.insertAdjacentHTML('beforeend', htmlContent);
+    }
+
+    
 }
