@@ -157,9 +157,9 @@ function solve(){
     var msg = '';
     document.querySelector('div.itemNesting[data-id="finalShape"]').innerHTML = msg;
 
-    // // seach for the best path
-    // path = findPath(pressed);
-    // console.log(path)
+    // seach for the best path
+    path = findPath(pressed, 0);
+    console.log(path)
 }
 
 // validates the 2D inputs 
@@ -222,47 +222,84 @@ function validate3D(_3D){
     return true;
 }
 
-// // recursivly finds best path 
-// function findPath(curState, depth){
-//     // base case 1 (works)
-//     if(validSpot(path, 'left') && validSpot(path, 'middle') && validSpot(path, 'right')){
-//         path;
-//     }
-//     // base case 2 (fails)
-//     if(depth == 6){
-//         return false;
-//     }
+// recursivly finds best path 
+function findPath(curState, depth){
+    // base case 1 (works)
+    if(validSpot(curState, 'left') && validSpot(curState, 'middle') && validSpot(curState, 'right')){
+        curState;
+    }
+    // base case 2 (fails)
+    if(depth == 6){
+        return false;
+    }
 
-//     // check if left and middle should swap
-//     if(!validSpot(curState, 'left') && !validSpot(curState, 'middle')){
+    // check if left and middle should swap
+    if(!validSpot(curState, 'left') || !validSpot(curState, 'middle')){
+        let options = getSwapOptions(curState, 'left', 'middle');
+    }
 
-//     }
-
-//     // check if left and right should swap
-//     if(!validSpot(curState, 'left') && !validSpot(curState, 'right')){
+    // check if left and right should swap
+    if(!validSpot(curState, 'left') && !validSpot(curState, 'right')){
         
-//     }
+    }
 
-//     // check if middle and right should swap
-//     if(!validSpot(curState, 'middle') && !validSpot(curState, 'right')){
+    // check if middle and right should swap
+    if(!validSpot(curState, 'middle') && !validSpot(curState, 'right')){
         
-//     }
-// }
+    }
+}
 
-// // check that the 3D and 2D have no matching
-// function validSpot(curState, side){
-//     // get shapes
-//     shape2D = curState['2D'][side];
-//     shapes3D = dictRef3D[dictShape['3D'][curState['3D'][side]]]
-//     // check if any shape matches
-//     if(shape2D == shapes3D[0] || shape2D == shapes3D[1]){
-//         return false
-//     }
-//     return true
-// }
+// check that the 3D and 2D have no matching
+function validSpot(curState, side){
+    // get shapes
+    shape2D = curState['2D'][side]['id'];
+    shapes3D = curState['3D'][side]['subset'];
+    // check if any shape matches
+    if(shape2D == shapes3D[0] || shape2D == shapes3D[1]){
+        return false;
+    }
+    return true;
+}
 
-// // get what two values can swap
-// function getSwapOptions(curState, side1, side2){
-//     shapes1 = dictRef3D[dictShape['3D'][curState['3D'][side1]]]
-//     shapes2 = dictRef3D[dictShape['3D'][curState['3D'][side1]]]
-// }
+// get what two values can swap
+function getSwapOptions(curState, side1, side2){
+    // values 
+    let shapes1_2D = curState['2D'][side1]['id'];
+    let shapes2_2D = curState['2D'][side2]['id'];
+    let shapes1_3D = curState['3D'][side1]['subset'];
+    let shapes2_3D = curState['3D'][side2]['subset'];
+    // get all possible options
+    let options = [];
+    for(let i = 0; i < 2; i++){
+        for(let j = 0; j < 2; j++){
+            // check that swapping to different shapes 
+            if(shapes1_3D[i] != shapes2_3D[j]){
+                // check that the shape is a good move
+                if(shapes1_3D[i] == shapes1_2D || shapes2_3D[i] == shapes2_2D){
+                    options.push([[side1, side2],[shapes1_3D[i], shapes2_3D[j]]])
+                }
+            }
+        }
+    }
+    debugger
+    // remove double values 
+    let betterOptions = [options[0]];
+    for(let i = 0; i < options.length; i++){
+        let newOpt = true;
+        for(let j = 0; j < betterOptions.length; j++){
+            if(JSON.stringify(options[i]) == JSON.stringify(betterOptions[j])){
+                newOpt = false;
+            }
+        }
+        if(newOpt){
+            betterOptions.push(options[i]);
+        }
+    }
+    return betterOptions;
+}
+
+// makes the swap and updates the struct
+// swap = [[left, right], [1, 2]]
+function makeSwap(curState, swap){
+
+}
