@@ -167,11 +167,25 @@ fieldset {
     object-fit: cover;
 }
 
-button img{
+button img {
     width: 100%; 
     height: 100%; 
-    object-fit: cover;
+    object-fit: cover; 
+    padding: 0; 
+    border: 2px solid #ccc; 
     border-radius: 5px;
+    background: none; 
+    position: relative; 
+    transition: border-color 0.3s, opacity 0.3s;
+}
+
+button:hover img {
+    opacity: 0.7; 
+}
+
+button.dimmed img {
+    opacity: 0.5; 
+    border-color: blue; 
 }
 
 /* footer */
