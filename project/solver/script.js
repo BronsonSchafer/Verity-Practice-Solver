@@ -5,6 +5,11 @@ const dictShape = {
         2: 'square',
         3: 'triangle'
     },
+    '2D_names': {
+        'circle': 1,
+        'square': 2,
+        'triangle': 3
+    },
     '3D': {
         1: 'sphere',
         2: 'cube',
@@ -12,7 +17,15 @@ const dictShape = {
         4: 'cylinder',
         5: 'prism',
         6: 'cone'
-    }
+    },
+    '3D_names':{
+        'sphere': 1,
+        'cube': 2,
+        'pyramid': 3,
+        'cylinder': 4,
+        'prism': 5,
+        'cone' :6
+    },
 };
 
 const dictRef3D = {
@@ -22,6 +35,12 @@ const dictRef3D = {
     'cylinder': [1, 2],
     'prism': [2, 3],
     'cone': [1, 3],
+    '11': 'sphere',
+    '22': 'cube',
+    '33': 'pyramid',
+    '12': 'cylinder',
+    '23': 'prism',
+    '13': 'cone',
 }
 
 // tracks all the pressed buttons
@@ -160,6 +179,8 @@ function solve(){
     // seach for the best path
     path = findPath(pressed, 0);
     console.log(path)
+
+    displayPath(path);
 }
 
 // validates the 2D inputs 
@@ -234,18 +255,24 @@ function findPath(curState, depth){
     }
 
     // check if left and middle should swap
+    debugger
     if(!validSpot(curState, 'left') || !validSpot(curState, 'middle')){
         let options = getSwapOptions(curState, 'left', 'middle');
+        let best = makeSwap(curState, options[0]);
+        console.log(curState)
+        console.log(best)
+        console.log(best)
+        debugger
     }
 
     // check if left and right should swap
     if(!validSpot(curState, 'left') && !validSpot(curState, 'right')){
-        
+        let options = getSwapOptions(curState, 'left', 'right');
     }
 
     // check if middle and right should swap
     if(!validSpot(curState, 'middle') && !validSpot(curState, 'right')){
-        
+        let options = getSwapOptions(curState, 'middle', 'right');
     }
 }
 
@@ -276,12 +303,11 @@ function getSwapOptions(curState, side1, side2){
             if(shapes1_3D[i] != shapes2_3D[j]){
                 // check that the shape is a good move
                 if(shapes1_3D[i] == shapes1_2D || shapes2_3D[i] == shapes2_2D){
-                    options.push([[side1, side2],[shapes1_3D[i], shapes2_3D[j]]])
+                    options.push([[side1, side2],[shapes1_3D[i], shapes2_3D[j]]]);
                 }
             }
         }
     }
-    debugger
     // remove double values 
     let betterOptions = [options[0]];
     for(let i = 0; i < options.length; i++){
@@ -301,5 +327,39 @@ function getSwapOptions(curState, side1, side2){
 // makes the swap and updates the struct
 // swap = [[left, right], [1, 2]]
 function makeSwap(curState, swap){
+    // get needed values 
+    let side1 = swap[0][0];
+    let side2 = swap[0][1];
+    let val1 = swap[1][0];
+    let val2 = swap[1][1];
+    // new struct 
+    newState = JSON.parse(JSON.stringify(curState));
+    newState['3D'][swap[0][0]]
+    // make swap
+    if(newState['3D'][side1]['subset'][0] == val1){
+        newState['3D'][side1]['subset'][0] = val2;
+    }
+    else{
+        newState['3D'][side1]['subset'][1] = val2;
+    }
+    // swap 2
+    if(newState['3D'][side2]['subset'][0] == val2){
+        newState['3D'][side2]['subset'][0] = val1;
+    }
+    else{
+        newState['3D'][side2]['subset'][1] = val1;
+    }
+    // update order (helps with updating shape)
+    newState['3D'][side1]['subset'].sort();
+    newState['3D'][side2]['subset'].sort();
+    // update shape 1
+    let newID = newState['3D'][side1]['subset'][0].toString() + newState['3D'][side1]['subset'][1].toString();
+    newState['3D'][side1]['name'] = dictRef3D[newID];
+    newState['3D'][side1]['id'] = dictShape['3D_names'][dictRef3D[newID]];
+    // update shape 2
+    newID = newState['3D'][side2]['subset'][0].toString() + newState['3D'][side2]['subset'][1].toString();
+    newState['3D'][side2]['name'] = dictRef3D[newID];
+    newState['3D'][side2]['id'] = dictShape['3D_names'][dictRef3D[newID]];
 
+    return newState;
 }
