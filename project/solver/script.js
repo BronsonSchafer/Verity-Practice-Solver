@@ -101,11 +101,16 @@ function saveInfo(button, save) {
 
 // solve based off the given info
 function solve(){
+    // check for valid input 
     var valid2D = validate2D(pressed['2D']);
     var valid3D = validate3D(pressed['3D']);
-    console.log('------')
-    console.log(valid2D)
-    console.log(valid3D)
+    if(!valid2D || !valid3D){
+        var msg = '<p>Waiting for valid input...</p>';
+        document.querySelector('div.itemNesting[data-id="finalShape"]').innerHTML = msg;
+        return;
+    }
+    var msg = '';
+    document.querySelector('div.itemNesting[data-id="finalShape"]').innerHTML = msg;
 }
 
 // validates the 2D inputs 
