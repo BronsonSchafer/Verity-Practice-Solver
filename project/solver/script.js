@@ -101,44 +101,78 @@ function saveInfo(button, save) {
 
 // solve based off the given info
 function solve(){
-    var valid = validate();
-    console.log(valid)
-    // check that all values are filled
-
+    var valid2D = validate2D(pressed['2D']);
+    var valid3D = validate3D(pressed['3D']);
+    console.log('------')
+    console.log(valid2D)
+    console.log(valid3D)
 }
 
-// validates the inputs 
-function validate(){
-    // check if any values are null
-    for(var dim in pressed){
-        for(var side in pressed[dim]){
-            if(pressed[dim][side] == null){
-                return null;
-            }
-        }
+// validates the 2D inputs 
+function validate2D(_2D){
+    // reset error message
+    document.querySelector('p[data-id="error2D"]').innerHTML = '';
+
+    // count set
+    var set = [0,0,0]
+    for(var side in _2D){
+        curShape = _2D[side]
+        set[curShape-1]+=1;
     }
 
-    // check that none of the 2D shapes are the same
-    const _2D = pressed['2D'];
-    if(_2D['left'] == _2D['middle'] || _2D['left'] == _2D['right'] || _2D['middle'] == _2D['right']){
+    // check for double count 
+    if(set[0] > 1 || set[1] > 1 || set[2] > 1){
+        let msg = '<strong>Error:</strong> You can\'t have more than one of the same shape!';
+        document.querySelector('p[data-id="error2D"]').innerHTML = msg;
         return false;
     }
 
+    // check for null
+    if(set[0] == 0 || set[1] == 0 || set[2] == 0){
+        return false;
+    }
+    return true;
+} 
+
+//validate the 3D inputs
+function validate3D(_3D){
+    // reset error message
+    document.querySelector('p[data-id="error3D"]').innerHTML = '';
+
     // check that the shape values add up
+    var set = [0,0,0,0,0,0]
     var subSet = [0, 0, 0]
-    for(var side in pressed['3D']){
-        curShape = pressed['3D'][side]
+    for(var side in _3D){
+        curShape = _3D[side]
         subShape = dictRef3D[dictShape['3D'][curShape]]
         // save sub shape values 
         for(var shape in subShape){
             subSet[subShape[shape] - 1] += 1;
         }
-    }
-    // check that all values add to 2 
-    if(subSet[0] != 2 || subSet[1] != 2 || subSet[2] != 2){
-        return false
+        set[curShape-1]+=1;
     }
 
-    // all tests pass
+    // check that two are not the same
+    for(let i = 0; i < 6; i++){
+        if(set[i] > 1){
+            let msg = '<strong>Error:</strong> You can\'t have more than one of the same shape!';
+            document.querySelector('p[data-id="error3D"]').innerHTML = msg;
+            return false;
+        }
+    }
+
+    // check that all values add to 2 
+    if(subSet[0] != 2 || subSet[1] != 2 || subSet[2] != 2){
+        // check if all shapes clicked
+        let msg = '<strong>Error:</strong> Imposible shape combination!';
+        if(subSet[0] + subSet[1] + subSet[2] == 6){
+            document.querySelector('p[data-id="error3D"]').innerHTML = msg;
+        }
+        // check the values add up
+        else if(subSet[0] > 2 || subSet[1] > 2 || subSet[2] > 2){
+            document.querySelector('p[data-id="error3D"]').innerHTML = msg;
+        }
+        return false;
+    }
     return true;
-} 
+}
