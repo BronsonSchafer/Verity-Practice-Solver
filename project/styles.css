@@ -6,7 +6,7 @@ html, body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
-    background-color: #c5cde6;
+    background-color: #e6e6f6;
 }
 
 .wrapper {
@@ -21,7 +21,7 @@ html, body {
 }
 
 header {
-    background-color: #a4deff;
+    background-color: #62bdee;
     color: #393941;
     text-align: center;
     padding: 20px 0;
@@ -54,14 +54,17 @@ button {
     margin: 5px;
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #c5cde6;
+    background-color: #e6e6f6;
+    color: #393941;
     border: 1px solid #393941;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #acaccd;
+    background-color: #c5cde6;
+    color: #000000;
 }
 
 /* container info */
@@ -76,7 +79,7 @@ button:hover {
 /* Item Info */
 .item {
     text-align: center;
-    background-color: #e6e6f6;
+    background-color: #a4deff;
     border: 2px solid #393941;
     border-radius: 10px;
     width: 25%;
@@ -104,7 +107,7 @@ img {
 
 /* footer */
 footer {
-    background-color: #a4deff;
+    background-color: #62bdee;
     color: #393941;
     text-align: center;
     padding: 10px 0;
