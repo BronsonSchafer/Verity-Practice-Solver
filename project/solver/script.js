@@ -27,14 +27,35 @@ const dictRef3D = {
 // tracks all the pressed buttons
 var pressed = {
     '2D': {
-        'left': null,
-        'middle': null,
-        'right': null,
+        'left': {
+            'name': null,
+            'id': null
+        },
+        'middle': {
+            'name': null,
+            'id': null
+        },
+        'right': {
+            'name': null,
+            'id': null
+        }
     },
     '3D': {
-        'left': null,
-        'middle': null,
-        'right': null,
+        'left': {
+            'name': null,
+            'id': null,
+            'subset': null
+        },
+        'middle': {
+            'name': null,
+            'id': null,
+            'subset': null
+        },
+        'right': {
+            'name': null,
+            'id': null,
+            'subset': null
+        }
     }
 };
 
@@ -91,11 +112,35 @@ function saveInfo(button, save) {
     var dim = groupId.substring(groupId.length - 2);
 
     // save the value 
-    if(!save){
-        pressed[dim][group] = null;
+    if(dim == '2D'){
+        if(save){
+            pressed[dim][group] = {
+                'name': dictShape['2D'][buttonId],
+                'id': buttonId
+            };
+        }
+        else{
+            pressed[dim][group] = {
+                'name': null,
+                'id': null
+            };
+        }
     }
     else{
-        pressed[dim][group] = buttonId;
+        if(save){
+            pressed[dim][group] = {
+                'name': dictShape['3D'][buttonId],
+                'id': buttonId,
+                'subset': dictRef3D[dictShape['3D'][buttonId]]
+            };
+        }
+        else{
+            pressed[dim][group] = {
+                'name': null,
+                'id': null,
+                'subset': null
+            };
+        }
     }
 }
 
@@ -111,6 +156,10 @@ function solve(){
     }
     var msg = '';
     document.querySelector('div.itemNesting[data-id="finalShape"]').innerHTML = msg;
+
+    // // seach for the best path
+    // path = findPath(pressed);
+    // console.log(path)
 }
 
 // validates the 2D inputs 
@@ -121,7 +170,7 @@ function validate2D(_2D){
     // count set
     var set = [0,0,0]
     for(var side in _2D){
-        curShape = _2D[side]
+        curShape = _2D[side]['id'];
         set[curShape-1]+=1;
     }
 
@@ -148,22 +197,13 @@ function validate3D(_3D){
     var set = [0,0,0,0,0,0]
     var subSet = [0, 0, 0]
     for(var side in _3D){
-        curShape = _3D[side]
-        subShape = dictRef3D[dictShape['3D'][curShape]]
+        curShape = _3D[side]['id']
+        subShape = _3D[side]['subset']
         // save sub shape values 
         for(var shape in subShape){
             subSet[subShape[shape] - 1] += 1;
         }
         set[curShape-1]+=1;
-    }
-
-    // check that two are not the same
-    for(let i = 0; i < 6; i++){
-        if(set[i] > 1){
-            let msg = '<strong>Error:</strong> You can\'t have more than one of the same shape!';
-            document.querySelector('p[data-id="error3D"]').innerHTML = msg;
-            return false;
-        }
     }
 
     // check that all values add to 2 
@@ -181,3 +221,48 @@ function validate3D(_3D){
     }
     return true;
 }
+
+// // recursivly finds best path 
+// function findPath(curState, depth){
+//     // base case 1 (works)
+//     if(validSpot(path, 'left') && validSpot(path, 'middle') && validSpot(path, 'right')){
+//         path;
+//     }
+//     // base case 2 (fails)
+//     if(depth == 6){
+//         return false;
+//     }
+
+//     // check if left and middle should swap
+//     if(!validSpot(curState, 'left') && !validSpot(curState, 'middle')){
+
+//     }
+
+//     // check if left and right should swap
+//     if(!validSpot(curState, 'left') && !validSpot(curState, 'right')){
+        
+//     }
+
+//     // check if middle and right should swap
+//     if(!validSpot(curState, 'middle') && !validSpot(curState, 'right')){
+        
+//     }
+// }
+
+// // check that the 3D and 2D have no matching
+// function validSpot(curState, side){
+//     // get shapes
+//     shape2D = curState['2D'][side];
+//     shapes3D = dictRef3D[dictShape['3D'][curState['3D'][side]]]
+//     // check if any shape matches
+//     if(shape2D == shapes3D[0] || shape2D == shapes3D[1]){
+//         return false
+//     }
+//     return true
+// }
+
+// // get what two values can swap
+// function getSwapOptions(curState, side1, side2){
+//     shapes1 = dictRef3D[dictShape['3D'][curState['3D'][side1]]]
+//     shapes2 = dictRef3D[dictShape['3D'][curState['3D'][side1]]]
+// }
