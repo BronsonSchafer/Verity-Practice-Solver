@@ -7,13 +7,50 @@
     <title>Verity Solver/Practice</title>
 </head>
 <body>
-    <header>
-        <h1>Salvation's Edge Verity (4th Encounter) <br>Solver and Practice</h1>
-        <nav>
-            <button onclick="redirect('solver')">Go to Solver</button>
-            <button onclick="redirect('practice')">Go to Practice</button>
-        </nav>
-    </header>
+    <div class="wrapper">
+        <header>
+            <h1>Salvation's Edge Verity (4th Encounter) <br>Solver and Practice</h1>
+            <nav>
+                <button onclick="redirect('solver')">Go to Solver</button>
+                <button onclick="redirect('practice')">Go to Practice</button>
+            </nav>
+        </header>
+        <div class="container">
+            <div class="item">
+                <p class="smallHeader">
+                    Verity Solver
+                </p>
+                <img src="../../assets/tempIMG.png" alt="Image 1" class="imgHome">
+                <p class="line"> </p>
+                <ul class="custom-list">
+                    <li>Solves the encounter for you.</li>
+                    <li>Enter the encountern information, and it will find the fastest solution.</li>
+                    <li>Shows steps in an easy to follow way.</li>
+                </ul>
+                <p class="line"> </p>
+                <button onclick="redirect('solver')">Go to Solver</button>
+            </div>
+            <div class="item">
+                <p class="smallHeader">
+                    Verity Practice
+                </p>
+                <img src="../../assets/tempIMG.png" alt="Image 1" class="imgHome">
+                <p class="line"> </p>
+                <ul class="custom-list">
+                    <li>Generates a random encounter senario.</li>
+                    <li>Lets you "do the ecounter".</li>
+                    <li>Tells you if you make mistakes or if there is a better solution.</li>
+                </ul>
+                <p class="line"> </p>
+                <button onclick="redirect('practice')">Go to Practice</button>
+            </div>
+        </div>
+        <footer>
+            <p>
+                Project inspired by Salvations Edge<br>
+            </p>
+        </footer>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

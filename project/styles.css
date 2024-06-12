@@ -1,11 +1,17 @@
 html, body {
-    font-family: Arial, sans-serif;
-    text-align: center;
     margin: 0;
     padding: 0;
     width: 100%;
-    background-color: #e6e6f6;
-    box-sizing: border-box;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 #app {
@@ -23,7 +29,27 @@ header {
     box-sizing: border-box;
 }
 
-nav button {
+.smallHeader {
+    font-size: 15pt;
+    font-weight: bold;
+    color: #393941;
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #393941;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.line {
+    color: #393941;
+    text-align: center;
+    border-bottom: 2px solid #393941;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Nav Info */
+button {
     margin: 5px;
     padding: 10px 20px;
     font-size: 16px;
@@ -33,6 +59,54 @@ nav button {
     cursor: pointer;
 }
 
-nav button:hover {
+button:hover {
     background-color: #ddd;
+}
+
+/* container info */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    margin: 20px;
+}
+
+/* Item Info */
+.item {
+    text-align: center;
+    border: 2px solid #393941;
+    border-radius: 10px;
+    width: 25%;
+    padding: 20px;
+    margin: 0 75px;
+    box-sizing: border-box;
+}
+
+/* Image Info */
+img {
+    display: block;
+    margin: 0 auto;
+}
+
+.imgHome {
+    width: 100%; 
+    height: 100%;
+    border-radius: 10px;
+}
+
+.custom-list {
+    list-style-type: square; 
+    text-align: left;
+}
+
+/* footer */
+footer {
+    background-color: #a4deff;
+    color: #393941;
+    text-align: center;
+    padding: 10px 0;
+    border-top: 2px solid #393941;
+    width: 100%;
+    box-sizing: border-box;
 }
