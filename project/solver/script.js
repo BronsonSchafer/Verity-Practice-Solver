@@ -179,7 +179,7 @@ function solve(){
     // seach for the best path
     let path = findPath(JSON.parse(JSON.stringify(pressed)), 0);
     console.log(path)
-    path = [[['left', 'middle'], [1, 2]], [['middle', 'right'], [3, 2]]]
+    path = [[['left', 'middle'], [1, 2]], [['middle', 'right'], [3, 2]], [['left', 'middle'], [1, 2]]]
     displayPath(path);
 }
 
