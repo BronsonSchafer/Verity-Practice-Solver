@@ -6,6 +6,7 @@ html, body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
+    background-color: #c5cde6;
 }
 
 .wrapper {
@@ -53,14 +54,14 @@ button {
     margin: 5px;
     padding: 10px 20px;
     font-size: 16px;
-    background-color: white;
-    border: 1px solid #ccc;
+    background-color: #c5cde6;
+    border: 1px solid #393941;
     border-radius: 5px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #ddd;
+    background-color: #acaccd;
 }
 
 /* container info */
@@ -75,6 +76,7 @@ button:hover {
 /* Item Info */
 .item {
     text-align: center;
+    background-color: #e6e6f6;
     border: 2px solid #393941;
     border-radius: 10px;
     width: 25%;
