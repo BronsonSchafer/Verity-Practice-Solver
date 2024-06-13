@@ -178,8 +178,8 @@ function solve(){
 
     // seach for the best path
     let path = findPath(JSON.parse(JSON.stringify(pressed)), 0);
-    console.log(path)
-    path = [[['left', 'middle'], [1, 2]], [['middle', 'right'], [3, 2]], [['left', 'middle'], [1, 2]]]
+    console.log(JSON.stringify(path))
+    //path = [[['left', 'middle'], [1, 2]], [['middle', 'right'], [3, 2]], [['left', 'middle'], [1, 2]]]
     displayPath(path);
 }
 
@@ -247,32 +247,42 @@ function validate3D(_3D){
 function findPath(curState, depth){
     // base case 1 (works)
     if(validSpot(curState, 'left') && validSpot(curState, 'middle') && validSpot(curState, 'right')){
-        curState;
+        return true;
     }
     // base case 2 (fails)
-    if(depth == 6){
+    if(depth >= 6){
         return false;
     }
 
-    let paths = [];
-    // check if left and middle should swap
-    if(!validSpot(curState, 'left') || !validSpot(curState, 'middle')){
-        let options = getSwapOptions(curState, 'left', 'middle');
-        let best = makeSwap(curState, options[0]);
-        paths.push(options[0]);
+    // holds the best path
+    let bestPath = [];
+    // get all possible swaps 
+    let options = getSwapOptions(curState);
+    // go through all possible swaps
+    for (let i = 0; i < options.length; i++){
+        let curOption = options[i];
+        let curPath = findPath(makeSwap(JSON.parse(JSON.stringify(curState)), curOption), depth+1);
+        // compare if the path is not false
+        if(curPath && curOption != []){
+            if(bestPath.length == 0 || curPath.length < bestPath.length){
+                // check if curPath is a validator or a value 
+                if(curPath.length > 0){
+                    let temp = JSON.parse(JSON.stringify(curPath));
+                    temp.push(curOption);
+                    bestPath = temp;
+                }
+                else{
+                    bestPath = [curOption];
+                }
+            }
+        }
     }
 
-    // check if left and right should swap
-    if(!validSpot(curState, 'left') && !validSpot(curState, 'right')){
-        let options = getSwapOptions(curState, 'left', 'right');
+    if(bestPath.length == 0){
+        return false;
     }
-
-    // check if middle and right should swap
-    if(!validSpot(curState, 'middle') && !validSpot(curState, 'right')){
-        let options = getSwapOptions(curState, 'middle', 'right');
-    }
-
-    return paths;
+    console.log(JSON.stringify(bestPath))
+    return bestPath;
 }
 
 // check that the 3D and 2D have no matching
@@ -288,21 +298,27 @@ function validSpot(curState, side){
 }
 
 // get what two values can swap
-function getSwapOptions(curState, side1, side2){
-    // values 
-    let shapes1_2D = curState['2D'][side1]['id'];
-    let shapes2_2D = curState['2D'][side2]['id'];
-    let shapes1_3D = curState['3D'][side1]['subset'];
-    let shapes2_3D = curState['3D'][side2]['subset'];
+function getSwapOptions(curState){
+    let combos = [['left', 'middle'], ['left', 'right'], ['middle', 'right']];
     // get all possible options
     let options = [];
-    for(let i = 0; i < 2; i++){
-        for(let j = 0; j < 2; j++){
-            // check that swapping to different shapes 
-            if(shapes1_3D[i] != shapes2_3D[j]){
-                // check that the shape is a good move
-                if(shapes1_3D[i] == shapes1_2D || shapes2_3D[i] == shapes2_2D){
-                    options.push([[side1, side2],[shapes1_3D[i], shapes2_3D[j]]]);
+    for(let combo = 0; combo < combos.length; combo+=1){
+        let side1 = combos[combo][0];
+        let side2 = combos[combo][1];
+        // values 
+        let shapes1_2D = curState['2D'][side1]['id'];
+        let shapes2_2D = curState['2D'][side2]['id'];
+        let shapes1_3D = curState['3D'][side1]['subset'];
+        let shapes2_3D = curState['3D'][side2]['subset'];
+        // find combos 
+        for(let i = 0; i < 2; i++){
+            for(let j = 0; j < 2; j++){
+                // check that swapping to different shapes 
+                if(shapes1_3D[i] != shapes2_3D[j]){
+                    // check that the shape is a good move
+                    if(shapes1_3D[i] == shapes1_2D || shapes2_3D[i] == shapes2_2D){
+                        options.push([[side1, side2],[shapes1_3D[i], shapes2_3D[j]]]);
+                    }
                 }
             }
         }
@@ -332,41 +348,49 @@ function makeSwap(curState, swap){
     let val1 = swap[1][0];
     let val2 = swap[1][1];
     // new struct 
-    newState = JSON.parse(JSON.stringify(curState));
-    newState['3D'][swap[0][0]]
+    curState['3D'][swap[0][0]];
     // make swap
-    if(newState['3D'][side1]['subset'][0] == val1){
-        newState['3D'][side1]['subset'][0] = val2;
+    if(curState['3D'][side1]['subset'][0] == val1){
+        curState['3D'][side1]['subset'][0] = val2;
     }
     else{
-        newState['3D'][side1]['subset'][1] = val2;
+        curState['3D'][side1]['subset'][1] = val2;
     }
     // swap 2
-    if(newState['3D'][side2]['subset'][0] == val2){
-        newState['3D'][side2]['subset'][0] = val1;
+    if(curState['3D'][side2]['subset'][0] == val2){
+        curState['3D'][side2]['subset'][0] = val1;
     }
     else{
-        newState['3D'][side2]['subset'][1] = val1;
+        curState['3D'][side2]['subset'][1] = val1;
     }
     // update order (helps with updating shape)
-    newState['3D'][side1]['subset'].sort();
-    newState['3D'][side2]['subset'].sort();
+    curState['3D'][side1]['subset'].sort();
+    curState['3D'][side2]['subset'].sort();
     // update shape 1
-    let newID = newState['3D'][side1]['subset'][0].toString() + newState['3D'][side1]['subset'][1].toString();
-    newState['3D'][side1]['name'] = dictRef3D[newID];
-    newState['3D'][side1]['id'] = dictShape['3D_names'][dictRef3D[newID]];
+    let newID = curState['3D'][side1]['subset'][0].toString() + curState['3D'][side1]['subset'][1].toString();
+    curState['3D'][side1]['name'] = dictRef3D[newID];
+    curState['3D'][side1]['id'] = dictShape['3D_names'][dictRef3D[newID]];
     // update shape 2
-    newID = newState['3D'][side2]['subset'][0].toString() + newState['3D'][side2]['subset'][1].toString();
-    newState['3D'][side2]['name'] = dictRef3D[newID];
-    newState['3D'][side2]['id'] = dictShape['3D_names'][dictRef3D[newID]];
+    newID = curState['3D'][side2]['subset'][0].toString() + curState['3D'][side2]['subset'][1].toString();
+    curState['3D'][side2]['name'] = dictRef3D[newID];
+    curState['3D'][side2]['id'] = dictShape['3D_names'][dictRef3D[newID]];
 
-    return newState;
+    return curState;
 }
 
 // Follows the path and makes the display for the options to take
 function displayPath(path){
     const finalShapeDiv = document.getElementById('finalShape');
-    for(let i = 0; i < path.length + 2; i++){
+    // base case (already solved)
+    if(path.length == 0){
+        let htmlContent = `
+            <p>Already in correct order!</p>
+        `
+        finalShapeDiv.insertAdjacentHTML('beforeend', htmlContent);
+        return;
+    }
+
+    for(let i = 0; i < path.length; i++){
         let move1 = path[i][0][0];
         let move2 = path[i][0][1];
         let shape1 = path[i][1][0];
