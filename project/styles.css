@@ -154,7 +154,7 @@ button:hover {
 
 .itemNesting {
     /* font/sizing */
-    margin: 10px; 
+    margin: 5px; 
 }
 
 .container {
@@ -283,6 +283,10 @@ button.dimmed img {
     color: var(--bold2);
 }
 
+.p-place{
+    margin: 0px;
+}
+
 /* footer */
 footer {
     /* font/sizing */
@@ -298,11 +302,54 @@ footer {
 
 /* Apply a maximum margin for larger screens */
 @media (max-width: 800px) {
+    .buttonSolver{
+        margin: 5px;
+    }
     .button-group {
-        /* font/sizing */
-        grid-gap: 0.2vh; 
         /* other */
         grid-template-columns: repeat(2, 1fr); 
         display: grid;
+    }
+    .itemHome {
+        /* font/sizing */
+        width: 320px;
+        padding: 10px;
+        margin: 30px;
+    }
+} 
+
+/* Apply a maximum margin for larger screens */
+@media (max-width: 650px) {
+    :root{
+        --selectBtn: 30px;
+    }
+    .button-group {
+        margin: 5px;
+    }
+    .buttonSolver{
+        margin: 0px;
+    }
+    .imgSolverSolved {
+        margin: 0px; 
+    }
+    .imgSolverSolved2 {
+        margin: 0px; 
+    }
+    .p-error{
+        font-size: 13px;
+    }
+    .containerFull{
+        margin: 0px;
+        padding: 0px;
+        flex-direction: column;
+        align-items: center;
+    }
+    .itemHome {
+        /* font/sizing */
+        width: 320px;
+        padding: 10px;
+        margin: 30px;
+        margin-bottom: 15px;
+        margin-top: 15px;
     }
 } 

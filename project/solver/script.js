@@ -376,7 +376,7 @@ function displayPath(path){
             <fieldset>
                 <legend>Step ${i+1}.)</legend>
                 <div class="itemNesting">
-                    <p>
+                    <p class="p-place">
                         Place <strong class="text-bold1">${dictShape['2D'][shape2]}</strong> on <strong class="text-bold1">${move1}</strong> and 
                         <strong class="text-bold2">${dictShape['2D'][shape1]}</strong> on <strong class="text-bold2">${move2}</strong>
                     </p>
@@ -402,7 +402,7 @@ function displayPath(path){
                     </div>
                 </div>
             </fieldset>
-            <div class="space"> </div>
+            ${i+1 === path.length ? '' : '<div class="spaceBig"></div>'}
         `;
 
         // Get the target element
