@@ -401,7 +401,7 @@ function displayPath(path, curState){
                 <div class="itemNesting">
                     <p class="p-place">
                         Place <strong class="text-bold1">${dictShape['2D'][shape1]}</strong> on <strong class="text-bold1">${move1}</strong> and 
-                        <strong class="text-bold2">${dictShape['2D'][shape1]}</strong> on <strong class="text-bold2">${move1}</strong>
+                        <strong class="text-bold2">${dictShape['2D'][shape2]}</strong> on <strong class="text-bold2">${move2}</strong>
                     </p>
                     <div class="button-groups">
                         <div align="center">
