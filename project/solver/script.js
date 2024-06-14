@@ -265,6 +265,9 @@ function findPath(curState, depth){
         // compare if the path is not false
         if(curPath && curOption != []){
             if(bestPath.length == 0 || curPath.length < bestPath.length){
+                console.log(JSON.stringify(curPath))
+                console.log(JSON.stringify(bestPath))
+                console.log('----------')
                 // check if curPath is a validator or a value 
                 if(curPath.length > 0){
                     let temp = JSON.parse(JSON.stringify(curPath));
@@ -315,10 +318,7 @@ function getSwapOptions(curState){
             for(let j = 0; j < 2; j++){
                 // check that swapping to different shapes 
                 if(shapes1_3D[i] != shapes2_3D[j]){
-                    // check that the shape is a good move
-                    if(shapes1_3D[i] == shapes1_2D || shapes2_3D[i] == shapes2_2D){
-                        options.push([[side1, side2],[shapes1_3D[i], shapes2_3D[j]]]);
-                    }
+                    options.push([[side1, side2],[shapes1_3D[i], shapes2_3D[j]]]);
                 }
             }
         }
@@ -382,7 +382,7 @@ function makeSwap(curState, swap){
 function displayPath(path){
     const finalShapeDiv = document.getElementById('finalShape');
     // base case (already solved)
-    if(path.length == 0){
+    if(path == true){
         let htmlContent = `
             <p>Already in correct order!</p>
         `
