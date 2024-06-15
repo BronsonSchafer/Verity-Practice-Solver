@@ -375,6 +375,7 @@ function makeSwap(curState, swap){
 
 // Follows the path and makes the display for the options to take
 function displayPath(path, curState){
+    path.reverse();
     const finalShapeDiv = document.getElementById('finalShape');
     // base case (already solved)
     if(path == true){
