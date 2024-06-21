@@ -120,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // save the current info 
 function saveInfo(button, save) {
+    return;
     // get cur info
     const fieldset = button.closest('.button-group'); 
     const groupId = fieldset.getAttribute('data-id'); 
